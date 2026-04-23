@@ -90,4 +90,26 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
         }
     }
 
+    @Test
+    @DisplayName("Sube una imagen y realiza la predicción de IA")
+    void testSubirYPredecir() {
+        // 1. Subimos la imagen usando tu método auxiliar
+        // IMPORTANTE: Asegúrate de tener una imagen real con este nombre en la carpeta src/test/resources/
+        subirImagen("healthy.jpg");
+
+        // 2. Llamamos al modelo de IA para la predicción
+        // Al ser el primer y único archivo subido en este entorno de pruebas (la BD arranca limpia),
+        // podemos asumir de forma segura que el ID asignado a la imagen será el 1.
+        testClient.get().uri("/imagen/predict/1")
+                .exchange()
+                .expectStatus().isOk() // Verificamos que la petición es exitosa (200 OK)
+                .expectBody(String.class) // Leemos el cuerpo de la respuesta
+                .value(respuesta -> {
+                    // Verificamos que la respuesta no esté vacía.
+                    // Como el enunciado dice que devuelve un resultado aleatorio,
+                    // solo comprobamos que nos ha devuelto "algo" (ajusta esto si sabes el formato exacto del JSON/String)
+                    assertTrue(respuesta != null && !respuesta.isEmpty());
+                });
+    }
+
    }
