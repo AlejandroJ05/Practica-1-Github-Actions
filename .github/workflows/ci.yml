@@ -47,3 +47,19 @@ jobs:
           name: Resultados de Pruebas
           path: 'target/surefire-reports/*.xml, target/failsafe-reports/*.xml'
           reporter: java-junit
+
+      # 6. Generar Badge de Cobertura con Jacoco
+      - name: Generar Badge de Jacoco
+        id: jacoco
+        uses: cicirello/jacoco-badge-generator@v2
+        with:
+          jacoco-csv-file: target/site/jacoco/jacoco.csv
+
+      # 7. Subir el badge generado al repositorio
+      - name: Subir Badge al repositorio
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add .github/badges/jacoco.svg
+          git commit -m "Actualizar badge de cobertura de código" || echo "No hay cambios en la cobertura"
+          git push
