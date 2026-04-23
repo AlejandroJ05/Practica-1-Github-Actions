@@ -3,9 +3,9 @@ name: CI/CD Pruebas de Integracion
 # 1. Se ejecuta con push o pull request
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "main", "develop" ]
 
 jobs:
   build-and-test:
