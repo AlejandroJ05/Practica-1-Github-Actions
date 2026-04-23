@@ -33,6 +33,7 @@ public class MedicoControllerMockMvcIT extends AbstractIntegration {
         medico.setEspecialidad("Ginecologia");
     }
 
+
     private void crearMedico(Medico medico) throws Exception {
         this.mockMvc.perform(post("/medico")
                 .contentType("application/json")
@@ -40,4 +41,16 @@ public class MedicoControllerMockMvcIT extends AbstractIntegration {
                 .andExpect(status().isCreated());
     }
 
+    @Test
+    @DisplayName("Crea un médico correctamente")
+    void testCrearMedico() throws Exception {
+        // Usa tu método auxiliar para crear el médico
+        crearMedico(medico);
+
+        // Verifica que se ha creado buscándolo por su ID
+        mockMvc.perform(get("/medico/" + medico.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nombre").value(medico.getNombre()))
+                .andExpect(jsonPath("$.especialidad").value(medico.getEspecialidad()));
+    }
 }
